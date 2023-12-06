@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Queue Details</title>
+</head>
+<body>
+
+<h1 th:text="${queue.name} + ' Queue Details'"></h1>
+
+<h2>Queue Information</h2>
+<p th:text="'Queue ID: ' + ${queue.id}"></p>
+<p th:text="'Queue Name: ' + ${queue.name}"></p>
+<p th:text="'Owner Name: ' + ${queue.ownerName}"></p>
+
+<h2>Queue Entries</h2>
+<table>
+    <thead>
+    <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${entries}">
+        <td th:text="${entry.Id}"></td>
+        <td th:text="${entry.userName}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Додайте додаткову інформацію або функціональність за необхідності -->
+
+</body>
+</html>

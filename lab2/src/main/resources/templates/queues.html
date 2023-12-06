@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Queue List</title>
+</head>
+<body>
+
+<h1>Queue List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Owner Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="queue : ${queues}">
+        <td th:text="${queue.id}"></td>
+        <td th:text="${queue.name}"></td>
+        <td th:text="${queue.ownerName}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

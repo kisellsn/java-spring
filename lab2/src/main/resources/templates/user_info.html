@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User Information</title>
+</head>
+<body>
+
+<h1 th:text="'User Information for ' + ${userName}"></h1>
+
+<h2>Your Queues:</h2>
+<ul>
+    <li th:each="entry : ${userEntries}" th:text="${entry.queue.name + ': Your place is ' + entry.id}"></li>
+</ul>
+
+</body>
+</html>
