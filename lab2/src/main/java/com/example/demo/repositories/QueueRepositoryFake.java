@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class QueueRepositoryStub {
+public class QueueRepositoryFake {
 
     private final List<Queue> queues = new ArrayList<>();
     //private List<QueueEntry> queueEntries = new ArrayList<>();

@@ -1,22 +1,21 @@
 package com.example.demo.service;
 import com.example.demo.model.Queue;
 import com.example.demo.model.QueueEntry;
-import com.example.demo.repositories.QueueRepositoryStub;
+import com.example.demo.repositories.QueueRepositoryFake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class QueueService {
 
-    private final QueueRepositoryStub queueRepository;
+    private final QueueRepositoryFake queueRepository;
 
     @Autowired
-    public QueueService(QueueRepositoryStub queueRepository) {
+    public QueueService(QueueRepositoryFake queueRepository) {
         this.queueRepository = queueRepository;
     }
 //    @Autowired
