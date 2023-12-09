@@ -1,13 +1,11 @@
 package com.example.demo.repositories;
 
 import com.example.demo.model.Queue;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class QueueRepositoryFake implements QueueRepository {
 
     private final List<Queue> queues = new ArrayList<>();
