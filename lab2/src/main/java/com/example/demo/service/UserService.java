@@ -4,7 +4,7 @@ import com.example.demo.model.User;
 
 public interface UserService {
 
-    User createUser(String name, String password);
+    void createUser(String name, String password);
 
     User getUser(Long id);
 

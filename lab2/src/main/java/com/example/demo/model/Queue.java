@@ -7,8 +7,8 @@ import java.util.List;
 public class Queue {
     private Long id;
     private String name;
-    private String ownerName;
-    private Long ownerId;
+    private final String ownerName;
+    private final Long ownerId;
 
     private final List<QueueEntry> queueEntries = new ArrayList<>();
 
@@ -16,17 +16,9 @@ public class Queue {
         entry.setId((long) (queueEntries.size() + 1));
         queueEntries.add(entry);
     }
-    public QueueEntry removeEntry() {
+    public void removeEntry() {
         QueueEntry removedEntry = queueEntries.remove(0);
         for (QueueEntry currentEntry : queueEntries) {
-            currentEntry.setId(currentEntry.getId() - 1);
-        }
-        return removedEntry;
-    }
-    public void removeEntry(QueueEntry entry) {
-        long removedId = entry.getId();
-        queueEntries.remove(entry);
-        for (QueueEntry currentEntry :  queueEntries.subList((int) (removedId-1), queueEntries.size())) {
             currentEntry.setId(currentEntry.getId() - 1);
         }
     }
@@ -65,8 +57,5 @@ public class Queue {
         return ownerId;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
 }
 

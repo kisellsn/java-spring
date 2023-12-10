@@ -3,7 +3,7 @@ package com.example.demo.model;
 
 public class QueueEntry {
     private Long id;
-    private String userName;
+    private final String userName;
     private Queue queue;
 
     public QueueEntry(Queue queue, String userName) {
@@ -31,7 +31,4 @@ public class QueueEntry {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }

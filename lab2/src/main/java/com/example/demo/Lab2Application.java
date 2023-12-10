@@ -10,14 +10,5 @@ public class Lab2Application {
         SpringApplication.run(Lab2Application.class, args);
     }
 
-//    @Bean
-//    QueueService queueService(QueueRepositoryStub queueRepository){
-//        return new QueueService(queueRepository);
-//    }
-//    @Bean
-//    QueueRepositoryStub queueRepository(){
-//        return new QueueRepositoryStub();
-//    }
-
 }
 

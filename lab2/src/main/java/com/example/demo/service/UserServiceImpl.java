@@ -15,9 +15,9 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
     }
 
-    public User createUser(String name, String password) {
+    public void createUser(String name, String password) {
         User user = new User(name, password);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public User getUser(Long id) {
