@@ -17,14 +17,11 @@ import java.util.Optional;
 
 @Controller
 public class Lab2Controller {
-    private final QueueService queueService;
-    private final UserService userService;
+    @Autowired
+    private QueueService queueService;
 
     @Autowired
-    public Lab2Controller(QueueService queueService, UserService userService) {
-        this.queueService = queueService;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @PostMapping("/login")
     public String login(String userName, String userPassword, Model model) {
@@ -51,8 +48,6 @@ public class Lab2Controller {
         if (user != null) {
             return "error";
         }
-
-
         this.userService.createUser(userName, userPassword);
         return "index";
     }
@@ -79,13 +74,6 @@ public class Lab2Controller {
         Queue newQueue = queueService.createQueue(queueName, user.getName(), userId);
         return "redirect:/getUserInfo?userId=" + userId;
     }
-//    @GetMapping("/joinQueue")
-//    public String showJoinQueueForm(@RequestParam String name, Model model) {
-//        queueService.getQueueByName(name).ifPresent(queue -> {
-//            model.addAttribute("queue", queue);
-//        });
-//        return "join_queue";
-//    }
 
     @PostMapping("/joinQueue")
     public String joinQueue(@RequestParam String name, Long userId) {
