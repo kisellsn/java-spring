@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>Create Queue</title>
@@ -8,15 +8,9 @@
 
 <h1>Create Queue</h1>
 
-<form action="/createQueue" method="post">
-    <label for="userName">Your Name:</label>
-    <input type="text" id="userName" name="ownerName" required><br>
-
+<form th:action="${'/createQueue?userId=' + userId}" method="post">
     <label for="queueName">Queue Name:</label>
     <input type="text" id="queueName" name="queueName" required><br>
-
-    <label for="password">Admin Password:</label>
-    <input type="text" id="password" name="password" required><br>
 
     <button type="submit">Create Queue</button>
 </form>

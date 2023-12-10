@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>Queue List</title>
@@ -14,6 +14,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Owner Name</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -21,9 +22,21 @@
         <td th:text="${queue.id}"></td>
         <td th:text="${queue.name}"></td>
         <td th:text="${queue.ownerName}"></td>
+        <td>
+            <form action="/queue" method="get">
+                <input type="hidden" name="name" th:value="${queue.name}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <button type="submit">Details</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<form action="/getUserInfo" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Back</button>
+</form>
 
 </body>
 </html>
