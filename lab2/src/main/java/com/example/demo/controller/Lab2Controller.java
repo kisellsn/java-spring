@@ -58,9 +58,10 @@ public class Lab2Controller {
     }
 
     @GetMapping("/queues")
-    public String showQueues(Model model) {
+    public String showQueues(Long userId, Model model) {
         List<Queue> queues = queueService.getAllQueues();
         model.addAttribute("queues", queues);
+        model.addAttribute("userId", userId);
         return "queues";
     }
 
@@ -78,32 +79,46 @@ public class Lab2Controller {
         Queue newQueue = queueService.createQueue(queueName, user.getName());
         return "redirect:/getUserInfo?userId=" + userId;
     }
-    @GetMapping("/joinQueue")
-    public String showJoinQueueForm(@RequestParam String name, Model model) {
-        queueService.getQueueByName(name).ifPresent(queue -> {
-            model.addAttribute("queue", queue);
-        });
-        return "join_queue";
-    }
+//    @GetMapping("/joinQueue")
+//    public String showJoinQueueForm(@RequestParam String name, Model model) {
+//        queueService.getQueueByName(name).ifPresent(queue -> {
+//            model.addAttribute("queue", queue);
+//        });
+//        return "join_queue";
+//    }
 
     @PostMapping("/joinQueue")
-    public String joinQueue(@RequestParam String name, String userName) {
-        queueService.getQueueByName(name).ifPresent(queue -> {
-            queueService.joinQueue(queue, userName);
-        });
-        return "redirect:/queue?name="+name;
+    public String joinQueue(@RequestParam String name, Long userId) {
+        User user = userService.getUser(userId);
+        if (user == null) {
+            return "error";
+        }
+        Queue queue = this.queueService.getQueueByName(name).orElse(null);
+        if (queue == null) {
+            return "error";
+        }
+        List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
+        for (QueueEntry entry : entries) {
+            if (entry.getUserName().equals(user.getName())) {
+                return "redirect:/getUserInfo?userId=" + userId;
+            }
+        }
+        queueService.joinQueue(queue, user.getName());
+        return "redirect:/getUserInfo?userId="+userId;
     }
 
     @GetMapping("/queue")
-    public String showQueueDetails(@RequestParam String name, Model model) {
+    public String showQueueDetails(@RequestParam String name, Long userId, Model model) {
         Optional<Queue> queue = queueService.getQueueByName(name);
         if (queue.isPresent()) {
             List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue.get());
             model.addAttribute("queue", queue.get());
             model.addAttribute("entries", entries);
+            model.addAttribute("userId", userId);
             return "queue_details";
         } else {
-            return "redirect:/queues";
+            return "error";
+//            return "redirect:/queues";
         }
     }
 

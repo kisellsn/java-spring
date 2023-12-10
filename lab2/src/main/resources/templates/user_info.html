@@ -27,6 +27,10 @@
     <input type="hidden" name="userId" th:value="${userId}" />
     <button type="submit">Create queue</button>
 </form>
+<form action="/queues" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">All queues</button>
+</form>
 
 </body>
 </html>

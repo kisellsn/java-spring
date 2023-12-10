@@ -13,6 +13,17 @@
 <p th:text="'Queue Name: ' + ${queue.name}"></p>
 <p th:text="'Owner Name: ' + ${queue.ownerName}"></p>
 
+<form action="/joinQueue" method="post">
+    <input type="hidden" name="name" th:value="${queue.name}" />
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Join Queue</button>
+</form>
+
+<form action="/queues" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Back</button>
+</form>
+
 <h2>Queue Entries</h2>
 <table>
     <thead>
@@ -28,8 +39,6 @@
     </tr>
     </tbody>
 </table>
-
-<!-- Додайте додаткову інформацію або функціональність за необхідності -->
 
 </body>
 </html>
