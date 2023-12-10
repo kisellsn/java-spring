@@ -21,7 +21,7 @@ public class QueueServiceImpl implements QueueService{
 
     public Queue createQueue(String name, String ownerName, Long ownerId) {
         Queue queue = new Queue(name, ownerName, ownerId);
-        return queueRepository.saveQueue(queue);
+        return queueRepository.save(queue);
     }
 
     public void joinQueue(Queue queue, String userName) {
@@ -30,7 +30,7 @@ public class QueueServiceImpl implements QueueService{
     }
 
     public List<Queue> getAllQueues() {
-        return queueRepository.getAllQueues();
+        return queueRepository.findAll();
     }
 
     public List<QueueEntry> getQueueEntriesByQueue(Queue queue) {
@@ -49,15 +49,15 @@ public class QueueServiceImpl implements QueueService{
     }
 
     public void closeQueue(Queue queue) {
-        queueRepository.closeQueue(queue);
+        queueRepository.delete(queue);
     }
 
     public Optional<Queue> getQueueByName(String name) {
-        return queueRepository.getQueueByName(name);
+        return queueRepository.find(name);
     }
 
     public List<QueueEntry> getUserEntries(String userName) {
-        List<Queue> queues = queueRepository.getAllQueues();
+        List<Queue> queues = queueRepository.findAll();
         List<QueueEntry> entries = new ArrayList<>();
         for (Queue queue : queues) {
             for (QueueEntry entry : queue.getQueueEntries()) {
@@ -70,7 +70,7 @@ public class QueueServiceImpl implements QueueService{
     }
 
     public List<Queue> getUserQueues(String userName) {
-        List<Queue> queues = queueRepository.getAllQueues();
+        List<Queue> queues = queueRepository.findAll();
         List<Queue> userQueues = new ArrayList<>();
         for (Queue queue : queues) {
             if (queue.getOwnerName().equals(userName)) {

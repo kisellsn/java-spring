@@ -12,24 +12,24 @@ public class QueueRepositoryFake implements QueueRepository {
 
     private final List<Queue> queues = new ArrayList<>();
 
-    public Queue saveQueue(Queue queue) {
+    public Queue save(Queue queue) {
         queue.setId((long) (queues.size() + 1));
         queues.add(queue);
         return queue;
     }
 
-    public List<Queue> getAllQueues() {
+    public List<Queue> findAll() {
         return queues;
     }
 
-    public void closeQueue(Queue queue) {
+    public void delete(Queue queue) {
         queues.remove(queue);
     }
 
-    public Optional<Queue> getQueueById(Long id) {
+    public Optional<Queue> findById(Long id) {
         return queues.stream().filter(queue -> queue.getId().equals(id)).findFirst();
     }
-    public Optional<Queue> getQueueByName(String name) {
+    public Optional<Queue> find(String name) {
         return queues.stream().filter(queue -> queue.getName().equals(name)).findFirst();
     }
 
