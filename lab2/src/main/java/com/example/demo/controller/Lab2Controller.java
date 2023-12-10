@@ -24,7 +24,7 @@ public class Lab2Controller {
     private UserService userService;
 
     @PostMapping("/login")
-    public String login(String userName, String userPassword, Model model) {
+    public String login(String userName, String userPassword) {
         User user = userService.getUserByName(userName);
         if (user == null) {
             return "error";
@@ -53,7 +53,7 @@ public class Lab2Controller {
     }
 
     @GetMapping("/queues")
-    public String showQueues(Long userId, Model model) {
+    public String showQueues(@RequestParam Long userId, Model model) {
         List<Queue> queues = queueService.getAllQueues();
         model.addAttribute("queues", queues);
         model.addAttribute("userId", userId);
@@ -71,7 +71,7 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        Queue newQueue = queueService.createQueue(queueName, user.getName(), userId);
+        queueService.createQueue(queueName, user.getName(), userId);
         return "redirect:/getUserInfo?userId=" + userId;
     }
 
@@ -105,8 +105,7 @@ public class Lab2Controller {
             model.addAttribute("userId", userId);
             return "queue_details";
         } else {
-            return "error";
-//            return "redirect:/queues";
+            return "redirect:/queues?userId=" + userId;
         }
     }
 

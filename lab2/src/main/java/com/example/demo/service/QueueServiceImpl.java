@@ -18,10 +18,6 @@ public class QueueServiceImpl implements QueueService{
     public QueueServiceImpl(QueueRepository queueRepository) {
         this.queueRepository = queueRepository;
     }
-//    @Autowired
-//    public void setQueueRepository(QueueRepositoryStub queueRepository) {
-//        this.queueRepository = queueRepository;
-//    }
 
     public Queue createQueue(String name, String ownerName, Long ownerId) {
         Queue queue = new Queue(name, ownerName, ownerId);
