@@ -83,7 +83,7 @@ public class Lab2Controller {
         }
         Queue queue = this.queueService.getQueueByName(name).orElse(null);
         if (queue == null) {
-            return "error";
+            return "redirect:/queues?userId" + userId;
         }
         List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
         for (QueueEntry entry : entries) {
