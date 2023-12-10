@@ -23,8 +23,8 @@ public class QueueServiceImpl implements QueueService{
 //        this.queueRepository = queueRepository;
 //    }
 
-    public Queue createQueue(String name, String ownerName) {
-        Queue queue = new Queue(name, ownerName);
+    public Queue createQueue(String name, String ownerName, Long ownerId) {
+        Queue queue = new Queue(name, ownerName, ownerId);
         return queueRepository.saveQueue(queue);
     }
 
@@ -47,6 +47,9 @@ public class QueueServiceImpl implements QueueService{
     }
     public void removeNextEntry(Queue queue) {
         queue.removeEntry();
+        if (queue.getQueueEntries().isEmpty()) {
+            this.closeQueue(queue);
+        }
     }
 
     public void closeQueue(Queue queue) {

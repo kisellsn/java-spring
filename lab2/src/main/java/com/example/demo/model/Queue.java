@@ -8,6 +8,7 @@ public class Queue {
     private Long id;
     private String name;
     private String ownerName;
+    private Long ownerId;
 
     private final List<QueueEntry> queueEntries = new ArrayList<>();
 
@@ -34,9 +35,10 @@ public class Queue {
     }
 
 
-    public Queue( String name, String ownerName) {
+    public Queue( String name, String ownerName, Long ownerId) {
         this.name = name;
         this.ownerName = ownerName;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -57,6 +59,10 @@ public class Queue {
 
     public String getOwnerName() {
         return ownerName;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
     }
 
     public void setOwnerName(String ownerName) {

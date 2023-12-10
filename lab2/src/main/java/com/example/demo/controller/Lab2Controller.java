@@ -76,7 +76,7 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        Queue newQueue = queueService.createQueue(queueName, user.getName());
+        Queue newQueue = queueService.createQueue(queueName, user.getName(), userId);
         return "redirect:/getUserInfo?userId=" + userId;
     }
 //    @GetMapping("/joinQueue")
@@ -108,7 +108,7 @@ public class Lab2Controller {
     }
 
     @GetMapping("/queue")
-    public String showQueueDetails(@RequestParam String name, Long userId, Model model) {
+    public String showQueueDetails(@RequestParam String name, @RequestParam Long userId, Model model) {
         Optional<Queue> queue = queueService.getQueueByName(name);
         if (queue.isPresent()) {
             List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue.get());
@@ -159,24 +159,27 @@ public class Lab2Controller {
     }
 
     @GetMapping("/next")
-    public String next(@RequestParam String name, @RequestParam String password) {
+    public String next(@RequestParam String name, @RequestParam Long userId) {
         Optional<Queue> queueOptional = queueService.getQueueByName(name);
         if (queueOptional.isPresent()) {
             Queue queue = queueOptional.get();
             queueService.removeNextEntry(queue);
         }
-
-        return "redirect:/queue?name="+name;
+        return "redirect:/getUserInfo?userId=" + userId;
     }
     @GetMapping("/removeUser")
-    public String removeUser(@RequestParam String name, @RequestParam String userName, @RequestParam String password) {
+    public String removeUser(@RequestParam String name, Long userId) {
+        User user = this.userService.getUser(userId);
+        if (user == null) {
+            return "error";
+        }
         Optional<Queue> queueOptional = queueService.getQueueByName(name);
         if (queueOptional.isPresent()) {
             Queue queue = queueOptional.get();
-            queueService.removeQueueEntry(queue, userName);
+            queueService.removeQueueEntry(queue, user.getName());
         }
 
-        return "redirect:/queue?name="+name;
+        return "redirect:/queue?userId=" + userId + "&name=" + name;
     }
 
 }

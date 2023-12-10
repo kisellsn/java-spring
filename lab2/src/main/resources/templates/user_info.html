@@ -17,6 +17,12 @@
             <input type="hidden" name="userId" th:value="${userId}" />
             <button type="submit">Delete</button>
         </form>
+        <span th:if="${!queue.getQueueEntries().isEmpty()}" th:text="${'Next one: ' + queue.getQueueEntries()[0].getUserName()}"></span>
+        <form th:if="${!queue.getQueueEntries().isEmpty()}" action="/next" method="get">
+            <input type="hidden" name="name" th:value="${queue.name}" />
+            <input type="hidden" name="userId" th:value="${userId}" />
+            <button type="submit">Next</button>
+        </form>
     </div>
 </div>
 <h2>Your Entries:</h2>

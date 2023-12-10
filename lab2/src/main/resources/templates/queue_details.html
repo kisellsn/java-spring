@@ -36,6 +36,13 @@
     <tr th:each="entry : ${entries}">
         <td th:text="${entry.Id}"></td>
         <td th:text="${entry.userName}"></td>
+        <td>
+            <form th:if="${userId == queue.ownerId}" action="/removeUser" method="get">
+                <input type="hidden" name="name" th:value="${queue.name}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <button type="submit">Remove from queue</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
