@@ -28,7 +28,7 @@
 <table>
     <thead>
     <tr>
-        <th>User ID</th>
+        <th>Position</th>
         <th>User Name</th>
     </tr>
     </thead>
@@ -37,11 +37,15 @@
         <td th:text="${entry.Id}"></td>
         <td th:text="${entry.userName}"></td>
         <td>
-            <form th:if="${userId == queue.ownerId}" action="/removeUser" method="get">
-                <input type="hidden" name="name" th:value="${queue.name}" />
-                <input type="hidden" name="userId" th:value="${userId}" />
-                <button type="submit">Remove from queue</button>
-            </form>
+            <p th:switch="${userId}">
+                <span th:case="${queue.ownerId}">
+                    <form th:if="${userId == queue.ownerId}" action="/removeUser" method="get">
+                        <input type="hidden" name="name" th:value="${queue.name}" />
+                        <input type="hidden" name="userId" th:value="${userId}" />
+                        <button type="submit">Remove from queue</button>
+                    </form>
+                </span>
+            </p>
         </td>
     </tr>
     </tbody>
