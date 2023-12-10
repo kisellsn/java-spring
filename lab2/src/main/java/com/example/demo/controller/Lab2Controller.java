@@ -64,7 +64,7 @@ public class Lab2Controller {
         return "queues";
     }
 
-    @PostMapping("/showCreateQueue")
+    @GetMapping("/createQueue")
     public String showCreateQueueForm(@RequestParam Long userId, Model model) {
         model.addAttribute("userId", userId);
         return "create_queue";
@@ -108,7 +108,11 @@ public class Lab2Controller {
     }
 
     @GetMapping("/closeQueue")
-    public String deleteQueue(@RequestParam String name, @RequestParam String password) {
+    public String deleteQueue(@RequestParam String name, @RequestParam Long userId) {
+        User user = userService.getUser(userId);
+        if (user == null) {
+            return "error";
+        }
         Optional<Queue> queueOptional = queueService.getQueueByName(name);
 
         if (queueOptional.isPresent()) {
@@ -116,7 +120,7 @@ public class Lab2Controller {
             queueService.closeQueue(queue);
         }
 
-        return "redirect:/queues";
+        return "redirect:/getUserInfo?userId=" + userId;
     }
 
 

@@ -9,14 +9,22 @@
 <h1 th:text="'User Information for ' + ${userName}"></h1>
 
 <h2>Your Queues:</h2>
-<ul>
-    <li th:each="queue : ${userQueues}" th:text="${queue.name + '. Identificator: ' + queue.id}"></li>
-</ul>
+<div th:each="queue : ${userQueues}">
+    <div>
+        <span th:text="${queue.name + '. Identificator: ' + queue.id}"></span>
+        <form action="/closeQueue" method="get">
+            <input type="hidden" name="name" th:value="${queue.name}" />
+            <input type="hidden" name="userId" th:value="${userId}" />
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+</div>
 <h2>Your Entries:</h2>
 <ul>
     <li th:each="entry : ${userEntries}" th:text="${entry.queue.name + ': Your place is ' + entry.id}"></li>
 </ul>
-<form th:action="@{'/showCreateQueue?userId=' + ${userId}}" method="post">
+<form th:action="@{/createQueue}" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
     <button type="submit">Create queue</button>
 </form>
 
