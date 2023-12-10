@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.model.User;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Scope("prototype")
 public class UserRepositoryFake implements UserRepository {
     private final List<User> users = new ArrayList<>();
 
