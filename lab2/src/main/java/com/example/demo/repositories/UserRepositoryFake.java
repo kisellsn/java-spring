@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository()
-public class UserRepositoryFake {
+@Repository
+public class UserRepositoryFake implements UserRepository {
     private final List<User> users = new ArrayList<>();
 
     public User save(User user) {
