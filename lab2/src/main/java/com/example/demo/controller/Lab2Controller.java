@@ -37,14 +37,7 @@ public class Lab2Controller {
             return "error";
         }
 
-        List<QueueEntry> userEntries = queueService.getUserEntries(userName);
-        List<Queue> userQueues = queueService.getUserQueues(userName);
-
-        model.addAttribute("userName", userName);
-        model.addAttribute("userEntries", userEntries);
-        model.addAttribute("userQueues", userQueues);
-        model.addAttribute("userId", user.getId());
-        return "user_info";
+        return "redirect:getUserInfo?userId=" + user.getId();
     }
 
     @GetMapping("/register")
@@ -71,14 +64,19 @@ public class Lab2Controller {
         return "queues";
     }
 
-    @GetMapping("/createQueue")
-    public String showCreateQueueForm() {
+    @PostMapping("/showCreateQueue")
+    public String showCreateQueueForm(@RequestParam Long userId, Model model) {
+        model.addAttribute("userId", userId);
         return "create_queue";
     }
     @PostMapping("/createQueue")
-    public String createQueue(String queueName, String ownerName, String password, Model model) {
-        Queue newQueue = queueService.createQueue(queueName, ownerName, password);
-        return "redirect:/queues";
+    public String createQueue(@RequestParam Long userId, String queueName) {
+        User user = userService.getUser(userId);
+        if (user == null) {
+            return "error";
+        }
+        Queue newQueue = queueService.createQueue(queueName, user.getName());
+        return "redirect:/getUserInfo?userId=" + userId;
     }
     @GetMapping("/joinQueue")
     public String showJoinQueueForm(@RequestParam String name, Model model) {
@@ -115,9 +113,7 @@ public class Lab2Controller {
 
         if (queueOptional.isPresent()) {
             Queue queue = queueOptional.get();
-            if (queue.getPassword().equals(password)) {
-                queueService.closeQueue(queue);
-            }
+            queueService.closeQueue(queue);
         }
 
         return "redirect:/queues";
@@ -125,11 +121,19 @@ public class Lab2Controller {
 
 
     @GetMapping("/getUserInfo")
-    public String getUserEntries(@RequestParam String name, Model model) {
-        List<QueueEntry> userEntries = queueService.getUserEntries(name);
-        List<Queue> userQueues = queueService.getUserQueues(name);
+    public String getUserEntries(@RequestParam Long userId, Model model) {
+        User user = this.userService.getUser(userId);
+        if (user == null) {
+            return "error";
+        }
 
-        model.addAttribute("userName", name);
+        String userName = user.getName();
+
+        List<QueueEntry> userEntries = queueService.getUserEntries(userName);
+        List<Queue> userQueues = queueService.getUserQueues(user.getName());
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("userName", userName);
         model.addAttribute("userEntries", userEntries);
         model.addAttribute("userQueues", userQueues);
         return "user_info";
@@ -140,9 +144,7 @@ public class Lab2Controller {
         Optional<Queue> queueOptional = queueService.getQueueByName(name);
         if (queueOptional.isPresent()) {
             Queue queue = queueOptional.get();
-            if (queue.getPassword().equals(password)) {
-                queueService.removeNextEntry(queue);
-            }
+            queueService.removeNextEntry(queue);
         }
 
         return "redirect:/queue?name="+name;
@@ -152,9 +154,7 @@ public class Lab2Controller {
         Optional<Queue> queueOptional = queueService.getQueueByName(name);
         if (queueOptional.isPresent()) {
             Queue queue = queueOptional.get();
-            if (queue.getPassword().equals(password)) {
-                queueService.removeQueueEntry(queue, userName);
-            }
+            queueService.removeQueueEntry(queue, userName);
         }
 
         return "redirect:/queue?name="+name;

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface QueueService {
 
-    Queue createQueue(String name, String ownerName, String password);
+    Queue createQueue(String name, String ownerName);
 
     void joinQueue(Queue queue, String userName);
 

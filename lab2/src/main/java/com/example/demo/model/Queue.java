@@ -8,15 +8,6 @@ public class Queue {
     private Long id;
     private String name;
     private String ownerName;
-    private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     private final List<QueueEntry> queueEntries = new ArrayList<>();
 
@@ -43,10 +34,9 @@ public class Queue {
     }
 
 
-    public Queue( String name, String ownerName, String password) {
+    public Queue( String name, String ownerName) {
         this.name = name;
         this.ownerName = ownerName;
-        this.password = password;
     }
 
     public Long getId() {

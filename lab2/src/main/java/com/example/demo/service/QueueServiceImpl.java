@@ -23,8 +23,8 @@ public class QueueServiceImpl implements QueueService{
 //        this.queueRepository = queueRepository;
 //    }
 
-    public Queue createQueue(String name, String ownerName, String password) {
-        Queue queue = new Queue(name, ownerName, password);
+    public Queue createQueue(String name, String ownerName) {
+        Queue queue = new Queue(name, ownerName);
         return queueRepository.saveQueue(queue);
     }
 

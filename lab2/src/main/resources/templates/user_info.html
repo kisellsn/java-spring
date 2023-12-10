@@ -16,7 +16,7 @@
 <ul>
     <li th:each="entry : ${userEntries}" th:text="${entry.queue.name + ': Your place is ' + entry.id}"></li>
 </ul>
-<form action="/createQueue" method="get">
+<form th:action="@{'/showCreateQueue?userId=' + ${userId}}" method="post">
     <button type="submit">Create queue</button>
 </form>
 
