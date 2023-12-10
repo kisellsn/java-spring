@@ -22,7 +22,7 @@ public interface QueueService {
 
     void closeQueue(Queue queue);
 
-    Optional<Queue> getQueueByName(String name);
+    Queue getQueueByName(String name);
 
     List<QueueEntry> getUserEntries(String userName);
 

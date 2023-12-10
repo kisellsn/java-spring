@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Scope("prototype")
-public class QueueRepositoryFake implements QueueRepository {
+public class QueueRepositoryFake implements RepositoryInterface<Queue> {
 
     private final List<Queue> queues = new ArrayList<>();
 
@@ -26,11 +26,13 @@ public class QueueRepositoryFake implements QueueRepository {
         queues.remove(queue);
     }
 
-    public Optional<Queue> findById(Long id) {
-        return queues.stream().filter(queue -> queue.getId().equals(id)).findFirst();
+    public Queue findById(Long id) {
+        Optional<Queue> queueToFind =  queues.stream().filter(queue -> queue.getId().equals(id)).findFirst();
+        return queueToFind.orElse(null);
     }
-    public Optional<Queue> find(String name) {
-        return queues.stream().filter(queue -> queue.getName().equals(name)).findFirst();
+    public Queue find(String name) {
+        Optional<Queue> queueToFind =  queues.stream().filter(queue -> queue.getName().equals(name)).findFirst();
+        return queueToFind.orElse(null);
     }
 
 }

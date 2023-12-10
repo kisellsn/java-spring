@@ -1,21 +1,20 @@
 package com.example.demo.service;
 import com.example.demo.model.Queue;
 import com.example.demo.model.QueueEntry;
-import com.example.demo.repositories.QueueRepository;
+import com.example.demo.repositories.RepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QueueServiceImpl implements QueueService{
 
-    private final QueueRepository queueRepository;
+    private final RepositoryInterface<Queue> queueRepository;
 
     @Autowired
-    public QueueServiceImpl(QueueRepository queueRepository) {
+    public QueueServiceImpl(RepositoryInterface<Queue> queueRepository) {
         this.queueRepository = queueRepository;
     }
 
@@ -52,7 +51,7 @@ public class QueueServiceImpl implements QueueService{
         queueRepository.delete(queue);
     }
 
-    public Optional<Queue> getQueueByName(String name) {
+    public Queue getQueueByName(String name) {
         return queueRepository.find(name);
     }
 

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -81,7 +80,7 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        Queue queue = this.queueService.getQueueByName(name).orElse(null);
+        Queue queue = this.queueService.getQueueByName(name);
         if (queue == null) {
             return "redirect:/queues?userId" + userId;
         }
@@ -97,10 +96,10 @@ public class Lab2Controller {
 
     @GetMapping("/queue")
     public String showQueueDetails(@RequestParam String name, @RequestParam Long userId, Model model) {
-        Optional<Queue> queue = queueService.getQueueByName(name);
-        if (queue.isPresent()) {
-            List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue.get());
-            model.addAttribute("queue", queue.get());
+        Queue queue = queueService.getQueueByName(name);
+        if (queue != null) {
+            List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
+            model.addAttribute("queue", queue);
             model.addAttribute("entries", entries);
             model.addAttribute("userId", userId);
             return "queue_details";
@@ -115,10 +114,8 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        Optional<Queue> queueOptional = queueService.getQueueByName(name);
-
-        if (queueOptional.isPresent()) {
-            Queue queue = queueOptional.get();
+        Queue queue = queueService.getQueueByName(name);
+        if (queue != null) {
             queueService.closeQueue(queue);
         }
 
@@ -147,9 +144,8 @@ public class Lab2Controller {
 
     @GetMapping("/next")
     public String next(@RequestParam String name, @RequestParam Long userId) {
-        Optional<Queue> queueOptional = queueService.getQueueByName(name);
-        if (queueOptional.isPresent()) {
-            Queue queue = queueOptional.get();
+        Queue queue = queueService.getQueueByName(name);
+        if (queue != null) {
             queueService.removeNextEntry(queue);
         }
         return "redirect:/getUserInfo?userId=" + userId;
@@ -160,9 +156,8 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        Optional<Queue> queueOptional = queueService.getQueueByName(name);
-        if (queueOptional.isPresent()) {
-            Queue queue = queueOptional.get();
+        Queue queue = queueService.getQueueByName(name);
+        if (queue != null) {
             queueService.removeQueueEntry(queue, user.getName());
         }
 

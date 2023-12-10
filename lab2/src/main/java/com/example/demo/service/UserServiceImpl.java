@@ -1,17 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.RepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    private UserRepository userRepository;
+    private RepositoryInterface<User> userRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserRepository(RepositoryInterface<User> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService{
         return this.userRepository.findById(id);
     }
 
-    public void deleteUser(Long id) {
-        this.userRepository.deleteById(id);
+    public void deleteUser(User user) {
+        this.userRepository.delete(user);
     }
 
     public User getUserByName(String name) {

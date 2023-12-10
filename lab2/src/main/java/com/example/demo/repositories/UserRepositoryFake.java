@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @Scope("prototype")
-public class UserRepositoryFake implements UserRepository {
+public class UserRepositoryFake implements RepositoryInterface<User> {
     private final List<User> users = new ArrayList<>();
 
     public User save(User user) {
@@ -22,11 +22,8 @@ public class UserRepositoryFake implements UserRepository {
         return users;
     }
 
-    public void deleteById(Long id) {
-        Optional<User> userToDelete =  users.stream().filter(user -> user.getId().equals(id)).findFirst();
-        if (userToDelete.isPresent()) {
-            users.remove(userToDelete.get());
-        }
+    public void delete(User user) {
+        users.remove(user);
     }
 
     public User findById(Long id) {
