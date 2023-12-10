@@ -52,7 +52,6 @@ public class QueueServiceImpl implements QueueService{
         queueRepository.closeQueue(queue);
     }
 
-
     public Optional<Queue> getQueueByName(String name) {
         return queueRepository.getQueueByName(name);
     }

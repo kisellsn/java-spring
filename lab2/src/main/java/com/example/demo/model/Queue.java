@@ -30,10 +30,10 @@ public class Queue {
             currentEntry.setId(currentEntry.getId() - 1);
         }
     }
+
     public List<QueueEntry> getQueueEntries(){
         return queueEntries;
     }
-
 
     public Queue( String name, String ownerName, Long ownerId) {
         this.name = name;
