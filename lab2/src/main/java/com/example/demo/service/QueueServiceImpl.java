@@ -70,4 +70,15 @@ public class QueueServiceImpl implements QueueService{
         }
         return entries;
     }
+
+    public List<Queue> getUserQueues(String userName) {
+        List<Queue> queues = queueRepository.getAllQueues();
+        List<Queue> userQueues = new ArrayList<>();
+        for (Queue queue : queues) {
+            if (queue.getOwnerName().equals(userName)) {
+                userQueues.add(queue);
+            }
+        }
+        return userQueues;
+    }
 }

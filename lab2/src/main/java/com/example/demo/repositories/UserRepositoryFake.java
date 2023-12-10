@@ -31,4 +31,9 @@ public class UserRepositoryFake implements UserRepository {
         Optional<User> userToFind =  users.stream().filter(user -> user.getId().equals(id)).findFirst();
         return userToFind.orElse(null);
     }
+
+    public User find(String name) {
+        Optional<User> userToFind =  users.stream().filter(user -> user.getName().equals(name)).findFirst();
+        return userToFind.orElse(null);
+    }
 }

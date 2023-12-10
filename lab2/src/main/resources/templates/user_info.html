@@ -10,8 +10,15 @@
 
 <h2>Your Queues:</h2>
 <ul>
+    <li th:each="queue : ${userQueues}" th:text="${queue.name + '. Identificator: ' + queue.id}"></li>
+</ul>
+<h2>Your Entries:</h2>
+<ul>
     <li th:each="entry : ${userEntries}" th:text="${entry.queue.name + ': Your place is ' + entry.id}"></li>
 </ul>
+<form action="/createQueue" method="get">
+    <button type="submit">Create queue</button>
+</form>
 
 </body>
 </html>

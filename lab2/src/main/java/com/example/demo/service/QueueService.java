@@ -25,4 +25,6 @@ public interface QueueService {
     Optional<Queue> getQueueByName(String name);
 
     List<QueueEntry> getUserEntries(String userName);
+
+    List<Queue> getUserQueues(String userName);
 }

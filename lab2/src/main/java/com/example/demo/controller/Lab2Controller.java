@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 import com.example.demo.model.Queue;
 import com.example.demo.model.QueueEntry;
+import com.example.demo.model.User;
 import com.example.demo.service.QueueService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,50 @@ import java.util.Optional;
 @Controller
 public class Lab2Controller {
     private final QueueService queueService;
+    private final UserService userService;
 
     @Autowired
-    public Lab2Controller(QueueService queueService) {
+    public Lab2Controller(QueueService queueService, UserService userService) {
         this.queueService = queueService;
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public String login(String userName, String userPassword, Model model) {
+        User user = userService.getUserByName(userName);
+        if (user == null) {
+            return "error";
+        }
+
+        if (!user.getPassword().equals(userPassword)) {
+            return "error";
+        }
+
+        List<QueueEntry> userEntries = queueService.getUserEntries(userName);
+        List<Queue> userQueues = queueService.getUserQueues(userName);
+
+        model.addAttribute("userName", userName);
+        model.addAttribute("userEntries", userEntries);
+        model.addAttribute("userQueues", userQueues);
+        model.addAttribute("userId", user.getId());
+        return "user_info";
+    }
+
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(String userName, String userPassword) {
+        User user = userService.getUserByName(userName);
+        if (user != null) {
+            return "error";
+        }
+
+
+        this.userService.createUser(userName, userPassword);
+        return "index";
     }
 
     @GetMapping("/queues")
@@ -82,13 +124,14 @@ public class Lab2Controller {
     }
 
 
-    @GetMapping("/getUserEntries")
+    @GetMapping("/getUserInfo")
     public String getUserEntries(@RequestParam String name, Model model) {
         List<QueueEntry> userEntries = queueService.getUserEntries(name);
+        List<Queue> userQueues = queueService.getUserQueues(name);
 
         model.addAttribute("userName", name);
         model.addAttribute("userEntries", userEntries);
-
+        model.addAttribute("userQueues", userQueues);
         return "user_info";
     }
 

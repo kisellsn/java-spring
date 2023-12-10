@@ -13,4 +13,6 @@ public interface UserRepository {
     void deleteById(Long id);
 
     User findById(Long id);
+
+    User find(String name);
 }
