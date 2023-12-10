@@ -18,9 +18,9 @@ public class QueueServiceImpl implements QueueService{
         this.queueRepository = queueRepository;
     }
 
-    public Queue createQueue(String name, String ownerName, Long ownerId) {
+    public void createQueue(String name, String ownerName, Long ownerId) {
         Queue queue = new Queue(name, ownerName, ownerId);
-        return queueRepository.save(queue);
+        queueRepository.save(queue);
     }
 
     public void joinQueue(Queue queue, String userName) {
