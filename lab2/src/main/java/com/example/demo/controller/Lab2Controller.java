@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -21,6 +22,8 @@ public class Lab2Controller {
 
     @Autowired
     private UserService userService;
+
+    private static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
 
     @PostMapping("/login")
     public String login(String userName, String userPassword) {
@@ -43,6 +46,9 @@ public class Lab2Controller {
 
     @PostMapping("/register")
     public String register(String userName, String userPassword) {
+        if (!isValidInput(userName) || !isValidInput(userPassword)) {
+            return "error";
+        }
         User user = userService.getUserByName(userName);
         if (user != null) {
             return "error";
@@ -66,6 +72,9 @@ public class Lab2Controller {
     }
     @PostMapping("/createQueue")
     public String createQueue(@RequestParam Long userId, String queueName) {
+        if (!isValidInput(queueName)) {
+            return "error";
+        }
         User user = userService.getUser(userId);
         if (user == null) {
             return "error";
@@ -163,5 +172,9 @@ public class Lab2Controller {
 
         return "redirect:/queue?userId=" + currentUserId + "&name=" + name;
     }
+    private boolean isValidInput(String input) {
+        return input != null && ALPHANUMERIC_PATTERN.matcher(input).matches();
+    }
 
 }
+
