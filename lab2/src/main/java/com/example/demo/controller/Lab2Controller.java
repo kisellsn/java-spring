@@ -151,17 +151,17 @@ public class Lab2Controller {
         return "redirect:/getUserInfo?userId=" + userId;
     }
     @GetMapping("/removeUser")
-    public String removeUser(@RequestParam String name, Long userId) {
-        User user = this.userService.getUser(userId);
+    public String removeUser(@RequestParam String name, Long currentUserId, String userName) {
+        User user = this.userService.getUserByName(userName);
         if (user == null) {
             return "error";
         }
         Queue queue = queueService.getQueueByName(name);
         if (queue != null) {
-            queueService.removeQueueEntry(queue, user.getName());
+            queueService.removeQueueEntry(queue, userName);
         }
 
-        return "redirect:/queue?userId=" + userId + "&name=" + name;
+        return "redirect:/queue?userId=" + currentUserId + "&name=" + name;
     }
 
 }

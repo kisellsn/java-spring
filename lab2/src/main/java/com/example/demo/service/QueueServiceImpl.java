@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class QueueServiceImpl implements QueueService{
@@ -37,7 +38,9 @@ public class QueueServiceImpl implements QueueService{
     }
 
     public void removeQueueEntry(Queue queue, String userName) {
-        queue.getQueueEntries().removeIf(entry -> entry.getUserName().equals(userName));
+        List<QueueEntry> queueEntries = queue.getQueueEntries();
+        queueEntries.removeIf(entry -> entry.getUserName().equals(userName));
+        IntStream.range(0, queueEntries.size()).forEach(i -> queueEntries.get(i).setId((long) (i + 1)));
 
     }
     public void removeNextEntry(Queue queue) {
