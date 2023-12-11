@@ -37,16 +37,16 @@
         <td th:text="${entry.Id}"></td>
         <td th:text="${entry.userName}"></td>
         <td>
-            <th th:switch="${userId}">
-                <span th:case="${queue.ownerId}">
+            <div th:switch="${userId}">
+                <div th:case="${queue.ownerId}">
                     <form action="/removeUser" method="get">
                         <input type="hidden" name="name" th:value="${queue.name}" />
                         <input type="hidden" name="currentUserId" th:value="${userId}" />
                         <input type="hidden" name="userName" th:value="${entry.userName}" />
                         <button type="submit">Remove from queue</button>
                     </form>
-                </span>
-            </th>
+                </div>
+            </div>
         </td>
     </tr>
     </tbody>
