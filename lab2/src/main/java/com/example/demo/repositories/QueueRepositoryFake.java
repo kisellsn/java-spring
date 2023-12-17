@@ -13,7 +13,7 @@ public class QueueRepositoryFake implements RepositoryInterface<Queue> {
     private final List<Queue> queues = new ArrayList<>();
 
     public Queue save(Queue queue) {
-        queue.setId((long) (queues.size() + 1));
+        queue.setQueueID((queues.size() + 1));
         queues.add(queue);
         return queue;
     }
@@ -26,10 +26,11 @@ public class QueueRepositoryFake implements RepositoryInterface<Queue> {
         queues.remove(queue);
     }
 
-    public Queue findById(Long id) {
-        Optional<Queue> queueToFind =  queues.stream().filter(queue -> queue.getId().equals(id)).findFirst();
+    public Queue findById(int id) {
+        Optional<Queue> queueToFind =  queues.stream().filter(queue -> queue.getQueueID() == id).findFirst();
         return queueToFind.orElse(null);
     }
+
     public Queue find(String name) {
         Optional<Queue> queueToFind =  queues.stream().filter(queue -> queue.getName().equals(name)).findFirst();
         return queueToFind.orElse(null);

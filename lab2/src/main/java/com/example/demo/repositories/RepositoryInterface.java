@@ -10,7 +10,7 @@ public interface RepositoryInterface<T> {
 
     void delete(T item);
 
-    T findById(Long id);
+    T findById(int id);
 
     T find(String name);
 }

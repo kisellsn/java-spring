@@ -36,7 +36,7 @@ public class Lab2Controller {
             return "error";
         }
 
-        return "redirect:getUserInfo?userId=" + user.getId();
+        return "redirect:getUserInfo?userId=" + user.getUserID();
     }
 
     @GetMapping("/register")
@@ -58,7 +58,7 @@ public class Lab2Controller {
     }
 
     @GetMapping("/queues")
-    public String showQueues(@RequestParam Long userId, Model model) {
+    public String showQueues(@RequestParam int userId, Model model) {
         List<Queue> queues = queueService.getAllQueues();
         model.addAttribute("queues", queues);
         model.addAttribute("userId", userId);
@@ -66,12 +66,12 @@ public class Lab2Controller {
     }
 
     @GetMapping("/createQueue")
-    public String showCreateQueueForm(@RequestParam Long userId, Model model) {
+    public String showCreateQueueForm(@RequestParam int userId, Model model) {
         model.addAttribute("userId", userId);
         return "create_queue";
     }
     @PostMapping("/createQueue")
-    public String createQueue(@RequestParam Long userId, String queueName) {
+    public String createQueue(@RequestParam int userId, String queueName) {
         if (!isValidInput(queueName)) {
             return "error";
         }
@@ -79,12 +79,12 @@ public class Lab2Controller {
         if (user == null) {
             return "error";
         }
-        queueService.createQueue(queueName, user.getName(), userId);
+        queueService.createQueue(queueName, user.getLogin(), userId);
         return "redirect:/getUserInfo?userId=" + userId;
     }
 
     @PostMapping("/joinQueue")
-    public String joinQueue(@RequestParam String name, Long userId) {
+    public String joinQueue(@RequestParam String name, int userId) {
         User user = userService.getUser(userId);
         if (user == null) {
             return "error";
@@ -95,16 +95,16 @@ public class Lab2Controller {
         }
         List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
         for (QueueEntry entry : entries) {
-            if (entry.getUserName().equals(user.getName())) {
+            if (entry.getUserName().equals(user.getLogin())) {
                 return "redirect:/getUserInfo?userId=" + userId;
             }
         }
-        queueService.joinQueue(queue, user.getName());
+        queueService.joinQueue(queue, user.getLogin());
         return "redirect:/getUserInfo?userId="+userId;
     }
 
     @GetMapping("/queue")
-    public String showQueueDetails(@RequestParam String name, @RequestParam Long userId, Model model) {
+    public String showQueueDetails(@RequestParam String name, @RequestParam int userId, Model model) {
         Queue queue = queueService.getQueueByName(name);
         if (queue != null) {
             List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
@@ -118,7 +118,7 @@ public class Lab2Controller {
     }
 
     @GetMapping("/closeQueue")
-    public String deleteQueue(@RequestParam String name, @RequestParam Long userId) {
+    public String deleteQueue(@RequestParam String name, @RequestParam int userId) {
         User user = userService.getUser(userId);
         if (user == null) {
             return "error";
@@ -133,16 +133,16 @@ public class Lab2Controller {
 
 
     @GetMapping("/getUserInfo")
-    public String getUserEntries(@RequestParam Long userId, Model model) {
+    public String getUserEntries(@RequestParam int userId, Model model) {
         User user = this.userService.getUser(userId);
         if (user == null) {
             return "error";
         }
 
-        String userName = user.getName();
+        String userName = user.getLogin();
 
         List<QueueEntry> userEntries = queueService.getUserEntries(userName);
-        List<Queue> userQueues = queueService.getUserQueues(user.getName());
+        List<Queue> userQueues = queueService.getUserQueues(user.getUserID());
 
         model.addAttribute("userId", userId);
         model.addAttribute("userName", userName);
@@ -152,7 +152,7 @@ public class Lab2Controller {
     }
 
     @GetMapping("/next")
-    public String next(@RequestParam String name, @RequestParam Long userId) {
+    public String next(@RequestParam String name, @RequestParam int userId) {
         Queue queue = queueService.getQueueByName(name);
         if (queue != null) {
             queueService.removeNextEntry(queue);
@@ -160,7 +160,7 @@ public class Lab2Controller {
         return "redirect:/getUserInfo?userId=" + userId;
     }
     @GetMapping("/removeUser")
-    public String removeUser(@RequestParam String name, Long currentUserId, String userName) {
+    public String removeUser(@RequestParam String name, int currentUserId, String userName) {
         User user = this.userService.getUserByName(userName);
         if (user == null) {
             return "error";

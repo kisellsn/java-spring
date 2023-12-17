@@ -19,8 +19,8 @@ public class QueueServiceImpl implements QueueService{
         this.queueRepository = queueRepository;
     }
 
-    public void createQueue(String name, String ownerName, Long ownerId) {
-        Queue queue = new Queue(name, ownerName, ownerId);
+    public void createQueue(String name, String ownerName, int ownerID) {
+        Queue queue = new Queue(name, ownerName, ownerID);
         queueRepository.save(queue);
     }
 
@@ -40,7 +40,7 @@ public class QueueServiceImpl implements QueueService{
     public void removeQueueEntry(Queue queue, String userName) {
         List<QueueEntry> queueEntries = queue.getQueueEntries();
         queueEntries.removeIf(entry -> entry.getUserName().equals(userName));
-        IntStream.range(0, queueEntries.size()).forEach(i -> queueEntries.get(i).setId((long) (i + 1)));
+        IntStream.range(0, queueEntries.size()).forEach(i -> queueEntries.get(i).setId(i + 1));
 
     }
     public void removeNextEntry(Queue queue) {
@@ -71,11 +71,11 @@ public class QueueServiceImpl implements QueueService{
         return entries;
     }
 
-    public List<Queue> getUserQueues(String userName) {
+    public List<Queue> getUserQueues(int userID) {
         List<Queue> queues = queueRepository.findAll();
         List<Queue> userQueues = new ArrayList<>();
         for (Queue queue : queues) {
-            if (queue.getOwnerName().equals(userName)) {
+            if (queue.getOwnerID()==userID) {
                 userQueues.add(queue);
             }
         }

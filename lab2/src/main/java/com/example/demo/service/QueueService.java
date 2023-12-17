@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface QueueService {
 
-    void createQueue(String name, String ownerName, Long ownerId);
+    void createQueue(String name, String ownerName, int ownerId);
 
     void joinQueue(Queue queue, String userName);
 
@@ -25,5 +25,5 @@ public interface QueueService {
 
     List<QueueEntry> getUserEntries(String userName);
 
-    List<Queue> getUserQueues(String userName);
+    List<Queue> getUserQueues(int userID);
 }

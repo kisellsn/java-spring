@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
-    public User getUser(Long id) {
+    public User getUser(int id) {
         return this.userRepository.findById(id);
     }
 

@@ -6,7 +6,7 @@ public interface UserService {
 
     void createUser(String name, String password);
 
-    User getUser(Long id);
+    User getUser(int id);
 
     void deleteUser(User user);
 

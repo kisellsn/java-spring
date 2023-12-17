@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 
 public class QueueEntry {
-    private Long id;
+    private int id;
     private final String userName;
     private Queue queue;
 
@@ -11,11 +11,11 @@ public class QueueEntry {
         this.userName = userName;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

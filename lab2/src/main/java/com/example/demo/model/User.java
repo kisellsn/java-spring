@@ -3,25 +3,42 @@ package com.example.demo.model;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class User {
-    private final Long id;
-    private final String name;
-    private final String password;
+    private int userID;
+    private String login;
+    private String password;
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String login, String password) {
+        this.login = login;
         this.password = password;
-        this.id = ThreadLocalRandom.current().nextLong(1,9999);
+        this.userID = ThreadLocalRandom.current().nextInt(1,9999);
+    }
+    public User() {
     }
 
-    public String getName() {
-        return this.name;
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
-    public Long getId() {
-        return this.id;
-    }
+
+
 }

@@ -26,13 +26,12 @@ public class UserRepositoryFake implements RepositoryInterface<User> {
         users.remove(user);
     }
 
-    public User findById(Long id) {
-        Optional<User> userToFind =  users.stream().filter(user -> user.getId().equals(id)).findFirst();
+    public User findById(int id) {
+        Optional<User> userToFind =  users.stream().filter(user -> user.getUserID()==id).findFirst();
         return userToFind.orElse(null);
     }
-
     public User find(String name) {
-        Optional<User> userToFind =  users.stream().filter(user -> user.getName().equals(name)).findFirst();
+        Optional<User> userToFind =  users.stream().filter(user -> user.getLogin().equals(name)).findFirst();
         return userToFind.orElse(null);
     }
 }

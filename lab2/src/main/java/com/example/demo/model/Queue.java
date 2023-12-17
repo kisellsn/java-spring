@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Queue {
-    private Long id;
+    private int queueID;
     private String name;
-    private final String ownerName;
-    private final Long ownerId;
-
+    private String code;
+    private int ownerID;
+    private boolean isLocked;
     private final List<QueueEntry> queueEntries = new ArrayList<>();
 
     public void addEntry(QueueEntry entry) {
-        entry.setId((long) (queueEntries.size() + 1));
+        entry.setId(queueEntries.size() + 1);
         queueEntries.add(entry);
     }
     public void removeEntry() {
@@ -23,22 +23,22 @@ public class Queue {
         }
     }
 
-    public List<QueueEntry> getQueueEntries(){
-        return queueEntries;
-    }
-
-    public Queue( String name, String ownerName, Long ownerId) {
+    public Queue(String name, String code, int ownerID) {
         this.name = name;
-        this.ownerName = ownerName;
-        this.ownerId = ownerId;
+        this.code = code;
+        this.ownerID = ownerID;
+        this.isLocked = false;
     }
 
-    public Long getId() {
-        return id;
+    public Queue() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public int getQueueID() {
+        return queueID;
+    }
+
+    public void setQueueID(int queueID) {
+        this.queueID = queueID;
     }
 
     public String getName() {
@@ -49,13 +49,32 @@ public class Queue {
         this.name = name;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getCode() {
+        return code;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public void setCode(String code) {
+        this.code = code;
     }
 
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public List<QueueEntry> getQueueEntries() {
+        return queueEntries;
+    }
 }
 
