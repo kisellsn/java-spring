@@ -19,12 +19,12 @@
     </thead>
     <tbody>
     <tr th:each="queue : ${queues}">
-        <td th:text="${queue.id}"></td>
+        <td th:text="${queue.queueID}"></td>
         <td th:text="${queue.name}"></td>
-        <td th:text="${queue.ownerName}"></td>
+        <td th:text="${queue.ownerID}"></td>
         <td>
             <form action="/queue" method="get">
-                <input type="hidden" name="name" th:value="${queue.name}" />
+                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
                 <input type="hidden" name="userId" th:value="${userId}" />
                 <button type="submit">Details</button>
             </form>

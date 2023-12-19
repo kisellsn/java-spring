@@ -1,6 +1,7 @@
 package com.example.demo.service;
 import com.example.demo.model.Queue;
 import com.example.demo.model.QueueEntry;
+import com.example.demo.model.User;
 import com.example.demo.repositories.RepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,11 @@ public class QueueServiceImpl implements QueueService{
         queueRepository.save(queue);
     }
 
-    public void joinQueue(Queue queue, String userName) {
-        QueueEntry entry = new QueueEntry(queue, userName);
-        queue.addEntry(entry);
+    public void joinQueue(Queue queue, User user) {
+        if(!queue.isLocked()){
+            QueueEntry entry = new QueueEntry(queue, user);
+            queue.addEntry(entry);
+        }
     }
 
     public List<Queue> getAllQueues() {
@@ -37,9 +40,9 @@ public class QueueServiceImpl implements QueueService{
         return queue.getQueueEntries();
     }
 
-    public void removeQueueEntry(Queue queue, String userName) {
+    public void removeQueueEntry(Queue queue,  User user) {
         List<QueueEntry> queueEntries = queue.getQueueEntries();
-        queueEntries.removeIf(entry -> entry.getUserName().equals(userName));
+        queueEntries.removeIf(entry -> entry.getUser().equals(user));
         IntStream.range(0, queueEntries.size()).forEach(i -> queueEntries.get(i).setId(i + 1));
 
     }
@@ -54,16 +57,17 @@ public class QueueServiceImpl implements QueueService{
         queueRepository.delete(queue);
     }
 
-    public Queue getQueueByName(String name) {
-        return queueRepository.find(name);
+    public Queue getQueueByID(int id) {
+        return queueRepository.findById(id);
     }
 
-    public List<QueueEntry> getUserEntries(String userName) {
+    public List<QueueEntry> getUserEntries(String userLogin) {
         List<Queue> queues = queueRepository.findAll();
         List<QueueEntry> entries = new ArrayList<>();
         for (Queue queue : queues) {
             for (QueueEntry entry : queue.getQueueEntries()) {
-                if (entry.getUserName().equals(userName)) {
+                String currUserLogin = entry.getUser().getLogin();
+                if (currUserLogin.equals(userLogin)) {
                     entries.add(entry);
                 }
             }
@@ -80,5 +84,9 @@ public class QueueServiceImpl implements QueueService{
             }
         }
         return userQueues;
+    }
+
+    public void setLocked(Queue queue, boolean isLocked){
+        queue.setLocked(isLocked);
     }
 }

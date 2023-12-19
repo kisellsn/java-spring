@@ -9,15 +9,21 @@
 <h1 th:text="${queue.name} + ' Queue Details'"></h1>
 
 <h2>Queue Information</h2>
-<p th:text="'Queue ID: ' + ${queue.id}"></p>
+<p th:text="'Queue ID: ' + ${queue.queueID}"></p>
 <p th:text="'Queue Name: ' + ${queue.name}"></p>
-<p th:text="'Owner Name: ' + ${queue.ownerName}"></p>
+<p th:text="'Owner Name: ' + ${queue.ownerID}"></p>
 
-<form action="/joinQueue" method="post">
-    <input type="hidden" name="name" th:value="${queue.name}" />
-    <input type="hidden" name="userId" th:value="${userId}" />
-    <button type="submit">Join Queue</button>
-</form>
+
+<div th:if="${!queue.isLocked()}">
+    <form action="/joinQueue" method="post">
+        <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+        <input type="hidden" name="userId" th:value="${userId}" />
+        <button type="submit">Join Queue</button>
+    </form>
+</div>
+<div th:unless="${!queue.isLocked()}">
+    <p th:text="'The queue is locked. You cannot join '"></p>
+</div>
 
 <form action="/queues" method="get">
     <input type="hidden" name="userId" th:value="${userId}" />
@@ -35,17 +41,15 @@
     <tbody>
     <tr th:each="entry : ${entries}">
         <td th:text="${entry.Id}"></td>
-        <td th:text="${entry.userName}"></td>
+        <td th:text="${entry.user.getLogin()}"></td>
         <td>
-            <div th:switch="${userId}">
-                <div th:case="${queue.ownerId}">
-                    <form action="/removeUser" method="get">
-                        <input type="hidden" name="name" th:value="${queue.name}" />
-                        <input type="hidden" name="currentUserId" th:value="${userId}" />
-                        <input type="hidden" name="userName" th:value="${entry.userName}" />
-                        <button type="submit">Remove from queue</button>
-                    </form>
-                </div>
+            <div th:if="${userId==queue.ownerID}">
+                <form action="/removeUser" method="get">
+                    <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                    <input type="hidden" name="currentUserId" th:value="${userId}" />
+                    <input type="hidden" name="userName" th:value="${entry.getUser().getLogin()}" />
+                    <button type="submit">Remove from queue</button>
+                </form>
             </div>
         </td>
     </tr>

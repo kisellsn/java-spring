@@ -3,12 +3,13 @@ package com.example.demo.model;
 
 public class QueueEntry {
     private int id;
-    private final String userName;
+    //private final String userLogin;
     private Queue queue;
+    private User user;
 
-    public QueueEntry(Queue queue, String userName) {
+    public QueueEntry(Queue queue, User user) {
         this.queue = queue;
-        this.userName = userName;
+        this.user = user;
     }
 
     public int getId() {
@@ -27,8 +28,11 @@ public class QueueEntry {
         this.queue = queue;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

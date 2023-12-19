@@ -12,6 +12,18 @@ public class User {
         this.password = password;
         this.userID = ThreadLocalRandom.current().nextInt(1,9999);
     }
+//
+//    public User(String login, String password) {
+//        this.login = login;
+//        this.password = password;
+//    }
+//
+//    public User(int userID, String login, String password) {
+//        this.userID = userID;
+//        this.login = login;
+//        this.password = password;
+//    }
+
     public User() {
     }
 
