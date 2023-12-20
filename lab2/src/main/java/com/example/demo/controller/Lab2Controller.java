@@ -26,13 +26,13 @@ public class Lab2Controller {
     private static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
 
     @PostMapping("/login")
-    public String login(String userName, String userPassword) {
-        User user = userService.getUserByName(userName);
+    public String login(String userLogin, String password) {
+        User user = userService.getUserByName(userLogin);
         if (user == null) {
             return "error";
         }
 
-        if (!user.getPassword().equals(userPassword)) {
+        if (!user.getPassword().equals(password)) {
             return "error";
         }
 
@@ -45,15 +45,12 @@ public class Lab2Controller {
     }
 
     @PostMapping("/register")
-    public String register(String userName, String userPassword) {
-        if (!isValidInput(userName) || !isValidInput(userPassword)) {
-            return "error";
-        }
-        User user = userService.getUserByName(userName);
-        if (user != null) {
-            return "error";
-        }
-        this.userService.createUser(userName, userPassword);
+    public String register(String userLogin, String password) {
+        if (!isValidInput(userLogin) || !isValidInput(password)) {return "error";}
+        User user = userService.getUserByName(userLogin);
+        if (user != null) {return "error";}
+
+        this.userService.add(userLogin, password);
         return "index";
     }
 
@@ -71,15 +68,12 @@ public class Lab2Controller {
         return "create_queue";
     }
     @PostMapping("/createQueue")
-    public String createQueue(@RequestParam int userId, String queueName) {
-        if (!isValidInput(queueName)) {
-            return "error";
-        }
+    public String createQueue(@RequestParam int userId, String queueName, String queueCode, boolean isLocked) {
+        if (!isValidInput(queueName)) {return "error";}
         User user = userService.getUser(userId);
-        if (user == null) {
-            return "error";
-        }
-        queueService.createQueue(queueName, user.getLogin(), userId);
+        if (user == null) {return "error";}
+
+        queueService.add(queueName, queueCode, isLocked, userId);
         return "redirect:/getUserInfo?userId=" + userId;
     }
 
@@ -93,7 +87,7 @@ public class Lab2Controller {
         if (queue == null) {
             return "redirect:/queues?userId" + userId;
         }
-        List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
+        List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queueID);
         for (QueueEntry entry : entries) {
             if (entry.getUser().equals(user)) {
                 return "redirect:/getUserInfo?userId=" + userId;
@@ -107,7 +101,7 @@ public class Lab2Controller {
     public String showQueueDetails(@RequestParam int queueID, @RequestParam int userId, Model model) {
         Queue queue = queueService.getQueueByID(queueID);
         if (queue != null) {
-            List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queue);
+            List<QueueEntry> entries = queueService.getQueueEntriesByQueue(queueID);
             model.addAttribute("queue", queue);
             model.addAttribute("entries", entries);
             model.addAttribute("userId", userId);
@@ -118,15 +112,12 @@ public class Lab2Controller {
     }
 
     @GetMapping("/closeQueue")
-    public String deleteQueue(@RequestParam int queueID, @RequestParam int userId) {
+    public String deleteQueue(@RequestParam int queueID, @RequestParam int userId, @RequestParam String code) {
         User user = userService.getUser(userId);
         if (user == null) {
             return "error";
         }
-        Queue queue = queueService.getQueueByID(queueID);
-        if (queue != null) {
-            queueService.closeQueue(queue);
-        }
+        queueService.closeQueue(queueID, code);
 
         return "redirect:/getUserInfo?userId=" + userId;
     }
@@ -152,40 +143,32 @@ public class Lab2Controller {
     }
 
     @GetMapping("/next")
-    public String next(@RequestParam int queueID, @RequestParam int userId) {
-        Queue queue = queueService.getQueueByID(queueID);
-        if (queue != null) {
-            queueService.removeNextEntry(queue);
-        }
+    public String next(@RequestParam int queueID, @RequestParam int userId, @RequestParam String code) {
+        queueService.removeNextEntry(queueID, code);
         return "redirect:/getUserInfo?userId=" + userId;
     }
     @GetMapping("/removeUser")
-    public String removeUser(@RequestParam int queueID, int currentUserId, String userName) {
-        User user = this.userService.getUserByName(userName);
+    public String removeUser(@RequestParam int queueID, int currentUserId, String userLogin, String code) {
+        User user = this.userService.getUserByName(userLogin);
         if (user == null) {
             return "error";
         }
-        Queue queue = queueService.getQueueByID(queueID);
-        if (queue != null) {
-            queueService.removeQueueEntry(queue, user);
-        }
+
+        queueService.removeQueueEntry(queueID, user, code);
 
         return "redirect:/queue?queueID=" + queueID+ "&userId=" + currentUserId;
     }
+    @GetMapping("/lockQueue")
+    public String lockQueue(@RequestParam int queueID, int userId, boolean isLocked) {
+        queueService.setLocked(queueID, isLocked);
+        return "redirect:/getUserInfo?userId=" + userId;
+    }
+
+
     private boolean isValidInput(String input) {
         return input != null && ALPHANUMERIC_PATTERN.matcher(input).matches();
     }
 
-    @GetMapping("/lockQueue")
-    public String lockQueue(@RequestParam int queueID, int userId, boolean isLocked) {
-
-        Queue queue = queueService.getQueueByID(queueID);
-        if (queue != null) {
-            queueService.setLocked(queue, isLocked);
-        }
-
-        return "redirect:/getUserInfo?userId=" + userId;
-    }
 
 }
 

@@ -1,8 +1,8 @@
 package com.example.demo.config;
 
 import com.example.demo.model.Queue;
-import com.example.demo.repositories.QueueRepositoryFake;
-import com.example.demo.repositories.RepositoryInterface;
+import com.example.demo.repository.QueueRepositoryFake;
+import com.example.demo.repository.RepositoryInterface;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

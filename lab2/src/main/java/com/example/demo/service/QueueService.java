@@ -8,19 +8,20 @@ import java.util.List;
 
 public interface QueueService {
 
-    void createQueue(String name, String ownerName, int ownerId);
+    void add(String name, String code, boolean isLocked, int ownerID);
+    void update(String name, String code, boolean isLocked, int ownerID, int queueID);
 
     void joinQueue(Queue queue, User user);
 
     List<Queue> getAllQueues();
 
-    List<QueueEntry> getQueueEntriesByQueue(Queue queue);
+    List<QueueEntry> getQueueEntriesByQueue(int queueID);
 
-    void removeQueueEntry(Queue queue, User user);
+    void removeQueueEntry(int queueID, User user, String code);
 
-    void removeNextEntry(Queue queue);
+    void removeNextEntry(int queueID, String code);
 
-    void closeQueue(Queue queue);
+    void closeQueue(int queueID, String code);
 
     Queue getQueueByID(int id);
 
@@ -28,5 +29,5 @@ public interface QueueService {
 
     List<Queue> getUserQueues(int userID);
 
-    void setLocked(Queue queue, boolean isLocked);
+    void setLocked(int queueID, boolean isLocked);
 }

@@ -12,11 +12,23 @@
 <div th:each="queue : ${userQueues}">
     <div>
         <span th:text="${queue.name + '. Identificator: ' + queue.queueID}"></span>
-        <form action="/closeQueue" method="get">
+        <form action="/closeQueue" method="post">
             <input type="hidden" name="queueID" th:value="${queue.queueID}" />
             <input type="hidden" name="userId" th:value="${userId}" />
+            <label for="code">Enter Code:</label>
+            <input type="password" id="code" name="code" required><br>
             <button type="submit">Delete</button>
         </form>
+        <div th:if="${!queue.getQueueEntries().isEmpty()}">
+            <span th:text="${'Next one: ' + queue.getQueueEntries()[0].getUser().getLogin()}"></span>
+            <form action="/next" method="get">
+                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <label for="code">Enter Code:</label>
+                <input type="password" id="nextCode" name="code" required><br>
+                <button type="submit">Next</button>
+            </form>
+        </div>
 
         <div th:switch="${queue.isLocked()}">
             <form th:case="false" action="/lockQueue" method="get">
@@ -33,14 +45,7 @@
             </form>
         </div>
 
-        <div th:if="${!queue.getQueueEntries().isEmpty()}">
-            <span th:text="${'Next one: ' + queue.getQueueEntries()[0].getUser().getLogin()}"></span>
-            <form action="/next" method="get">
-                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
-                <input type="hidden" name="userId" th:value="${userId}" />
-                <button type="submit">Next</button>
-            </form>
-        </div>
+
     </div>
 </div>
 <h2>Your Entries:</h2>

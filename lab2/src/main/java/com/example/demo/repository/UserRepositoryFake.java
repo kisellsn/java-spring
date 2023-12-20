@@ -1,4 +1,4 @@
-package com.example.demo.repositories;
+package com.example.demo.repository;
 
 import com.example.demo.model.User;
 import org.springframework.context.annotation.Scope;
@@ -13,24 +13,27 @@ import java.util.Optional;
 public class UserRepositoryFake implements RepositoryInterface<User> {
     private final List<User> users = new ArrayList<>();
 
-    public User save(User user) {
+    public int add(User user) {
         users.add(user);
-        return user;
+        return user.getUserID();
+    }
+    public void update(User user) {
+
     }
 
     public List<User> findAll() {
         return users;
     }
 
-    public void delete(User user) {
-        users.remove(user);
+    public void deleteById(int userID) {
+        users.removeIf(user -> user.getUserID() == userID);
     }
 
     public User findById(int id) {
         Optional<User> userToFind =  users.stream().filter(user -> user.getUserID()==id).findFirst();
         return userToFind.orElse(null);
     }
-    public User find(String name) {
+    public User findByName(String name) {
         Optional<User> userToFind =  users.stream().filter(user -> user.getLogin().equals(name)).findFirst();
         return userToFind.orElse(null);
     }

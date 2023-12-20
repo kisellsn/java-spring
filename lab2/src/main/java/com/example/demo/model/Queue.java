@@ -22,28 +22,20 @@ public class Queue {
             currentEntry.setId(currentEntry.getId() - 1);
         }
     }
-
-    public Queue(String name, String code, int ownerID) {
+    public Queue(String name, String code, boolean isLocked, int ownerID) {
         this.name = name;
         this.code = code;
+        this.isLocked = isLocked;
         this.ownerID = ownerID;
-        this.isLocked = false;
     }
-//
-//    public Queue(String name, String code, boolean isLocked, int ownerID) {
-//        this.name = name;
-//        this.code = code;
-//        this.isLocked = isLocked;
-//        this.ownerID = ownerID;
-//    }
-//
-//    public Queue(int queueID, String name, String code, boolean isLocked, int ownerID) {
-//        this.queueID = queueID;
-//        this.name = name;
-//        this.code = code;
-//        this.isLocked = isLocked;
-//        this.ownerID = ownerID;
-//    }
+
+    public Queue(int queueID, String name, String code, boolean isLocked, int ownerID) {
+        this.queueID = queueID;
+        this.name = name;
+        this.code = code;
+        this.isLocked = isLocked;
+        this.ownerID = ownerID;
+    }
 
     public Queue() {
     }
