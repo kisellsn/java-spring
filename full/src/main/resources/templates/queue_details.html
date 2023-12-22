@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Queue Details</title>
+</head>
+<body>
+
+<h1 th:text="${queue.name} + ' Queue Details'"></h1>
+
+<h2>Queue Information</h2>
+<p th:text="'Queue ID: ' + ${queue.queueID}"></p>
+<p th:text="'Queue Name: ' + ${queue.name}"></p>
+<p th:text="'Owner Name: ' + ${queue.ownerID}"></p>
+
+
+<div th:if="${queue.isLocked()}">
+    <p th:text="'The queue is locked. You cannot join '"></p>
+</div>
+<div th:unless="${queue.isLocked()}">
+    <form action="/joinQueue" method="post">
+        <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+        <input type="hidden" name="userId" th:value="${userId}" />
+        <button type="submit">Join Queue</button>
+    </form>
+</div>
+
+
+<form action="/queues" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Back</button>
+</form>
+
+<h2>Queue Entries</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Position</th>
+        <th>User Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry, iterStat : ${entries}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${entry.login}"></td>
+        <td>
+            <div th:if="${userId==queue.ownerID}">
+                <form action="/removeUser" method="get">
+                    <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                    <input type="hidden" name="currentUserId" th:value="${userId}" />
+                    <input type="hidden" name="userLogin" th:value="${entry.login}" />
+                    <label for="code">Enter Code:</label>
+                    <input type="password" id="code" name="code" required>
+                    <button type="submit">Remove from queue</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

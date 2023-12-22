@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Electronic queuee</title>
+</head>
+<body>
+    
+    <h1>Electronic queue</h1>
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <label for="userLogin">Your name:</label>
+        <input type="text" th:maxlength="20" id="userLogin" name="userLogin" required><br>
+
+        <label for="password">Your password:</label>
+        <input type="text" th:maxlength="20" id="password" name="password" required><br>
+
+        <button type="submit">Log in</button>
+    </form>
+    <form action="/register" method="get">
+        <h2>No account? Register</h2>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

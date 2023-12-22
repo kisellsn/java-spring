@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create Queue</title>
+</head>
+<body>
+
+<h1>Create Queue</h1>
+
+<form th:action="${'/createQueue?userId=' + userId}" method="post">
+    <label for="queueName">Queue Name:</label>
+    <input type="text" th:maxlength="20" id="queueName" name="queueName" required><br>
+
+    <label for="queueCode">Code:</label>
+    <input type="text" th:maxlength="20" id="queueCode" name="queueCode" required><br>
+
+    <label for="isLocked">Is Locked:</label>
+    <input type="checkbox" id="isLocked" name="isLocked"><br>
+
+    <button type="submit">Create Queue</button>
+</form>
+
+</body>
+</html>
