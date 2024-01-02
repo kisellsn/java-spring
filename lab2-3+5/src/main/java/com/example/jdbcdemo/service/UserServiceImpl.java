@@ -1,28 +1,30 @@
-package com.example.demo.service;
+package com.example.jdbcdemo.service;
 
-import com.example.demo.model.User;
-import com.example.demo.repository.RepositoryInterface;
+import com.example.jdbcdemo.models.User;
+import com.example.jdbcdemo.repository.IRepository;
+import com.example.jdbcdemo.repository.IRelationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    private RepositoryInterface<User> userRepository;
+    private IRepository<User> userRepository;
 
     @Autowired
-    public void setUserRepository(RepositoryInterface<User> userRepository) {
+    public void setUserRepository(IRepository<User> userRepository) {
         this.userRepository = userRepository;
     }
 
-
-    public void add(String login, String password) {
+    @Transactional
+    public int add(String login, String password) {
         User user = userRepository.findByName(login);
         if (user == null) {
             User newUser = new User(login, password);
-            userRepository.add(newUser);
+            return userRepository.add(newUser);
         }
-
+        return 0;
     }
 
     public void update(String login, String password, int userID) {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Queue Details</title>
+</head>
+<body>
+
+<h1 th:text="${queue.name} + ' Queue Details'"></h1>
+
+<h2>Queue Information</h2>
+<p th:text="'Queue ID: ' + ${queue.id}"></p>
+<p th:text="'Queue Name: ' + ${queue.name}"></p>
+<p th:text="'Owner Name: ' + ${queue.ownerName}"></p>
+
+<form action="/joinQueue" method="post">
+    <input type="hidden" name="name" th:value="${queue.name}" />
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Join Queue</button>
+</form>
+
+<form action="/queues" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Back</button>
+</form>
+
+<h2>Queue Entries</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Position</th>
+        <th>User Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${entries}">
+        <td th:text="${entry.Id}"></td>
+        <td th:text="${entry.userName}"></td>
+        <td>
+            <div th:switch="${userId}">
+                <div th:case="${queue.ownerId}">
+                    <form action="/removeUser" method="get">
+                        <input type="hidden" name="name" th:value="${queue.name}" />
+                        <input type="hidden" name="currentUserId" th:value="${userId}" />
+                        <input type="hidden" name="userName" th:value="${entry.userName}" />
+                        <button type="submit">Remove from queue</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

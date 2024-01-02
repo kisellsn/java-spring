@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User Information</title>
+</head>
+<body>
+
+<h1 th:text="'User Information for ' + ${userName}"></h1>
+
+<h2>Your Queues:</h2>
+<div th:each="queue : ${userQueues}">
+    <div>
+        <span th:text="${queue.name + '. Identificator: ' + queue.queueID}"></span>
+        <form action="/closeQueue" method="post">
+            <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+            <input type="hidden" name="userId" th:value="${userId}" />
+            <label th:for="${'code' + queue.queueID}">Enter Code:</label>
+            <input type="password" th:id="${'code' + queue.queueID}" name="code" required><br>
+            <button type="submit">Delete</button>
+        </form>
+        <div th:if="${!queueService.getAllUsersInQueue(queue.getQueueID()).isEmpty()}">
+            <span th:text="${'Next one: ' + queueService.getAllUsersInQueue(queue.getQueueID())[0].getLogin()}"></span>
+            <form action="/next" method="get">
+                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <label th:for="${'nextCode' + queue.queueID}">Enter Code:</label>
+                <input type="password" th:id="${'nextCode' + queue.queueID}" name="code" required><br>
+                <button type="submit">Next</button>
+            </form>
+        </div>
+
+        <div th:switch="${queue.isLocked()}">
+            <form th:case="false" action="/lockQueue" method="post">
+                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <input type="hidden" name="isLocked" th:value="false" />
+                <button type="submit">Lock</button>
+            </form>
+            <form th:case="true" action="/lockQueue" method="post">
+                <input type="hidden" name="queueID" th:value="${queue.queueID}" />
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <input type="hidden" name="isLocked" th:value="false" />
+                <button type="submit">UnLock</button>
+            </form>
+        </div>
+
+
+
+    </div>
+</div>
+<h2>Your Entries:</h2>
+<ul>
+    <li th:each="entry : ${userEntries}" th:text="${entry.queueName + ': Your place is ' + entry.place}"></li>
+</ul>
+<form action="/createQueue" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">Create queue</button>
+</form>
+<form action="/queues" method="get">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <button type="submit">All queues</button>
+</form>
+
+</body>
+</html>

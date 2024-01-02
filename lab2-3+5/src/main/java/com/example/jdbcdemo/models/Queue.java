@@ -1,28 +1,23 @@
-package com.example.demo.model;
-
-
-import java.util.ArrayList;
-import java.util.List;
+package com.example.jdbcdemo.models;
 
 public class Queue {
     private int queueID;
     private String name;
     private String code;
-    private int ownerID;
     private boolean isLocked;
-    private final List<QueueEntry> queueEntries = new ArrayList<>();
+    private int ownerID;
 
-    public void addEntry(QueueEntry entry) {
-        entry.setId(queueEntries.size() + 1);
-        queueEntries.add(entry);
-    }
-    public void removeEntry() {
-        QueueEntry removedEntry = queueEntries.remove(0);
-        for (QueueEntry currentEntry : queueEntries) {
-            currentEntry.setId(currentEntry.getId() - 1);
-        }
-    }
+    public Queue() {}
+
     public Queue(String name, String code, boolean isLocked, int ownerID) {
+        this.name = name;
+        this.code = code;
+        this.isLocked = isLocked;
+        this.ownerID = ownerID;
+    }
+
+    public Queue(int queueID, String name, String code, boolean isLocked, int ownerID) {
+        this.queueID = queueID;
         this.name = name;
         this.code = code;
         this.isLocked = isLocked;
@@ -53,6 +48,14 @@ public class Queue {
         this.code = code;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.isLocked = locked;
+    }
+
     public int getOwnerID() {
         return ownerID;
     }
@@ -60,17 +63,4 @@ public class Queue {
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
     }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
-    public List<QueueEntry> getQueueEntries() {
-        return queueEntries;
-    }
 }
-
