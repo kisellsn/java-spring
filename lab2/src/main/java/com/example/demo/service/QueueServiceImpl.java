@@ -14,10 +14,12 @@ import java.util.stream.IntStream;
 public class QueueServiceImpl implements QueueService{
 
     private final RepositoryInterface<Queue> queueRepository;
+    private final UserService userService;
 
     @Autowired
-    public QueueServiceImpl(RepositoryInterface<Queue> queueRepository) {
+    public QueueServiceImpl(RepositoryInterface<Queue> queueRepository,  UserService userService) {
         this.queueRepository = queueRepository;
+        this.userService = userService;
     }
 
     public void add(String name, String code, boolean isLocked, int ownerID) {
@@ -28,18 +30,19 @@ public class QueueServiceImpl implements QueueService{
     public void update(String name, String code, boolean isLocked, int ownerID, int queueID) {
         Queue queue = queueRepository.findById(queueID);
         if (queue != null) {
-            queue.setQueueID(queueID);
             queue.setName(name);
             queue.setCode(code);
             queue.setLocked(isLocked);
             queue.setOwnerID(ownerID);
-            //queueRepository.update(queue);
+            queueRepository.update(queue);
         }
     }
 
 
-    public void joinQueue(Queue queue, User user) {
-        if(!queue.isLocked()){
+    public void joinQueue(int queueID, int userID) {
+        User user = userService.getUser(userID);
+        Queue queue = queueRepository.findById(queueID);;
+        if(user!=null && queue!=null && !queue.isLocked()){
             QueueEntry entry = new QueueEntry(queue, user);
             queue.addEntry(entry);
         }
@@ -115,7 +118,7 @@ public class QueueServiceImpl implements QueueService{
     public void setLocked(int queueID, boolean isLocked){
         Queue queue = this.getQueueByID(queueID);
         if (queue != null) {
-            queue.setLocked(isLocked);
+            this.update(queue.getName(), queue.getCode(), isLocked, queue.getOwnerID(), queueID);
         }
     }
 }

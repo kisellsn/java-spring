@@ -11,7 +11,7 @@ public interface QueueService {
     void add(String name, String code, boolean isLocked, int ownerID);
     void update(String name, String code, boolean isLocked, int ownerID, int queueID);
 
-    void joinQueue(Queue queue, User user);
+    void joinQueue(int queueID, int userID);
 
     List<Queue> getAllQueues();
 

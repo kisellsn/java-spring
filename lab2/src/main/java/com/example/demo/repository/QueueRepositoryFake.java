@@ -19,7 +19,10 @@ public class QueueRepositoryFake implements RepositoryInterface<Queue> {
     }
 
     public void update(Queue queue) {
-
+        int index = queues.indexOf(queue);
+        if (index != -1) {
+            queues.set(index, queue);
+        }
     }
 
     public List<Queue> findAll() {

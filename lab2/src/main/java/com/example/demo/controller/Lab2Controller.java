@@ -93,7 +93,7 @@ public class Lab2Controller {
                 return "redirect:/getUserInfo?userId=" + userId;
             }
         }
-        queueService.joinQueue(queue, user);
+        queueService.joinQueue(queueID, userId);
         return "redirect:/getUserInfo?userId="+userId;
     }
 

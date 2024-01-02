@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService{
 
     //@Transactional
     public int add(String login, String password) {
-        User user = this.getUserByName(login);
+        User user = userRepository.findByName(login);
         if (user == null) {
             User newUser = new User(login, password);
            return userRepository.add(newUser);
@@ -36,14 +36,14 @@ public class UserServiceImpl implements UserService{
     }
 
     public User getUser(int id) {
-        return this.userRepository.findById(id);
+        return userRepository.findById(id);
     }
 
     public void deleteUser(User user) {
-        this.userRepository.deleteById(user.getUserID());
+        userRepository.deleteById(user.getUserID());
     }
 
     public User getUserByName(String name) {
-        return this.userRepository.findByName(name);
+        return userRepository.findByName(name);
     }
 }

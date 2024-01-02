@@ -18,7 +18,10 @@ public class UserRepositoryFake implements RepositoryInterface<User> {
         return user.getUserID();
     }
     public void update(User user) {
-
+        int index = users.indexOf(user);
+        if (index != -1) {
+            users.set(index, user);
+        }
     }
 
     public List<User> findAll() {
